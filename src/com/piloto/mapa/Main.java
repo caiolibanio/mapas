@@ -28,7 +28,6 @@ import android.view.MenuItem;
 
 public class Main extends Activity implements OnMapClickListener{
 	private GoogleMap myMap;
-	private MapController mapController;
 	LocationClient myLocation;
 	
     @Override
