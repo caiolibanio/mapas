@@ -13,6 +13,8 @@ import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.maps.MapController;
 
@@ -33,34 +35,66 @@ public class Main extends Activity implements OnMapClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BitmapDescriptor image = BitmapDescriptorFactory.fromResource(R.drawable.androidmarker);
-        LatLngBounds bounds = new LatLngBounds(new LatLng(-7.334423,-34.884523), new LatLng(-7.234423,-34.884520));
-        
-        
         FragmentManager myFragmentManager = getFragmentManager();
         MapFragment myMapFragment 
          = (MapFragment)myFragmentManager.findFragmentById(R.id.map);
         myMap = myMapFragment.getMap();
-        
-        myMap.setMyLocationEnabled(true);
+        myMap.setMyLocationEnabled(false);
         myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         myMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(-7.234423,-35.884523) , 14.0f) );
-        
-        GroundOverlayOptions newarkMap =  new GroundOverlayOptions()
-        .image(BitmapDescriptorFactory.fromResource(R.drawable.androidmarker))
-        .anchor(0, 1)
-        .position(new LatLng(-7.234423, -35.884523), 200f, 200f);
-        myMap.addGroundOverlay(newarkMap);
-        
-        
+       
+    }
+    
+    public void clearLayers(){
+    	myMap.clear();
+    }
+    
+    public void showRedLayer(){
+    	drawLayer(new LatLng(-7.222077,-35.882081), "Camada Vermelha", R.drawable.andoidmarkerred);
+    	drawLayer(new LatLng(-7.2261,-35.873841), "Camada Vermelha", R.drawable.andoidmarkerred);
+    	drawLayer(new LatLng(-7.228825,-35.884226), "Camada Vermelha", R.drawable.andoidmarkerred);
+    	drawLayer(new LatLng(-7.230358,-35.875836), "Camada Vermelha", R.drawable.andoidmarkerred);
+    	drawLayer(new LatLng(-7.228229,-35.882553), "Camada Vermelha", R.drawable.andoidmarkerred);
+    	drawLayer(new LatLng(-7.228612,-35.884076), "Camada Vermelha", R.drawable.andoidmarkerred);
+    }
+    
+    public void showGreenLayer(){
+    	drawLayer(new LatLng(-7.234423, -35.884523), "Camada Verde", R.drawable.androidmarker);
+    	drawLayer(new LatLng(-7.225462,-35.884012), "Camada Verde", R.drawable.androidmarker);
+    	drawLayer(new LatLng(-7.224717,-35.882102), "Camada Verde", R.drawable.androidmarker);
+    	drawLayer(new LatLng(-7.224099,-35.880278), "Camada Verde", R.drawable.androidmarker);
+    	drawLayer(new LatLng(-7.229911,-35.878347), "Camada Verde", R.drawable.androidmarker);
+    	drawLayer(new LatLng(-7.230464,-35.876823), "Camada Verde", R.drawable.androidmarker);
+    }
+    public void drawLayer(LatLng pos, String titulo, int imageId){
+        myMap.addMarker(new MarkerOptions()
+        .position(pos)
+        .title(titulo)
+        .snippet("Informações adicionais podem vir aqui...")
+        .icon(BitmapDescriptorFactory.fromResource(imageId)));
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater(); 
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        super.onCreateOptionsMenu(menu);
-        MenuInflater mi = getMenuInflater();
-        mi.inflate(R.menu.main, menu);
-        return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.item1:
+            	clearLayers();
+            	showGreenLayer();
+                return true;
+            case R.id.item2:
+            	clearLayers();
+            	showRedLayer();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     
 
